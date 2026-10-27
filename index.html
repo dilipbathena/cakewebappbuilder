@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artisan Cakes & Bakes | Handcrafted Celebrations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        🎂 <span id="brand-title">Artisan Cakes</span>
+      </a>
+      <button class="cart-btn" id="open-cart-btn" aria-label="Shopping Cart">
+        <span>🛒 Cart</span>
+        <span class="cart-badge" id="cart-counter">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <h1 id="hero-title">Handcrafted Luxury Cakes</h1>
+    <p id="hero-subtitle">Baked fresh each morning using premium natural ingredients and delivered directly to your doorstep.</p>
+  </section>
+
+  <!-- Catalog Section -->
+  <main class="container">
+    <h2 class="section-title">Signature Cakes</h2>
+    <div class="products-grid" id="product-list">
+      <!-- Injected dynamically from config.js -->
+    </div>
+  </main>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-overlay"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3>Your Bag</h3>
+      <button id="close-cart-btn" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+    </div>
+    <div class="cart-body" id="cart-items">
+      <p style="text-align:center; color:#888; margin-top:2rem;">Your cart is currently empty.</p>
+    </div>
+    <div class="cart-footer">
+      <div style="display:flex; justify-content:space-between; margin-bottom:1rem; font-weight:700; font-size:1.1rem;">
+        <span>Total Amount:</span>
+        <span id="cart-total">₹0</span>
+      </div>
+      <button class="checkout-btn" id="checkout-btn" onclick="alert('Thank you for ordering! Checkout workflow initiated.')">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script>
+    let cart = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Set Header / Hero Info from Config
+      if (window.STORE_CONFIG) {
+        document.getElementById("brand-title").innerText = window.STORE_CONFIG.brandName;
+        renderProducts(window.STORE_CONFIG.products);
+      }
+
+      // Drawer listeners
+      const drawer = document.getElementById("cart-drawer");
+      const overlay = document.getElementById("cart-overlay");
+      document.getElementById("open-cart-btn").addEventListener("click", () => {
+        drawer.classList.add("active");
+        overlay.style.display = "block";
+      });
+      const closeCart = () => {
+        drawer.classList.remove("active");
+        overlay.style.display = "none";
+      };
+      document.getElementById("close-cart-btn").addEventListener("click", closeCart);
+      overlay.addEventListener("click", closeCart);
+    });
+
+    function renderProducts(products) {
+      const container = document.getElementById("product-list");
+      container.innerHTML = products.map(product => `
+        <article class="product-card">
+          <img class="product-img" src="${product.image}" alt="${product.name}" />
+          <div class="product-details">
+            <span style="font-size:0.8rem; font-weight:700; color:var(--secondary); text-transform:uppercase; margin-bottom:0.25rem;">${product.badge}</span>
+            <h3 class="product-title">${product.name}</h3>
+            <p class="product-desc">${product.description}</p>
+            <div class="product-pricing">
+              <span class="price">₹${product.price}</span>
+              <button class="btn-add" onclick="addToCart('${product.id}')">+ Add to Bag</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function addToCart(productId) {
+      const product = window.STORE_CONFIG.products.find(p => p.id === productId);
+      if (!product) return;
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      document.getElementById("cart-counter").innerText = count;
+      document.getElementById("cart-total").innerText = "₹" + total;
+
+      const itemsContainer = document.getElementById("cart-items");
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = '<p style="text-align:center; color:#888; margin-top:2rem;">Your cart is currently empty.</p>';
+        return;
+      }
+
+      itemsContainer.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <p>₹${item.price} &times; ${item.qty} = ₹${item.price * item.qty}</p>
+          </div>
+          <div>
+            <button onclick="changeQty('${item.id}', -1)" style="padding:2px 8px; cursor:pointer;">-</button>
+            <span style="margin: 0 5px; font-weight:600;">${item.qty}</span>
+            <button onclick="changeQty('${item.id}', 1)" style="padding:2px 8px; cursor:pointer;">+</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function changeQty(productId, delta) {
+      const item = cart.find(i => i.id === productId);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== productId);
+      }
+      updateCartUI();
+    }
+  </script>
+</body>
+</html>
