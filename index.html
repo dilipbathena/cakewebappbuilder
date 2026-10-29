@@ -3,35 +3,432 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Artisan Cakes & Bakes | Pineapple & Chocolate Specials</title>
+  <title>Artisan Cakes & Bakes | Pineapple, Vanilla & Chocolate</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="CSS/style.css" />
+  <style>
+    :root {
+      --primary: #c25975;
+      --primary-hover: #a8435d;
+      --primary-light: #fdf2f4;
+      --secondary: #e6a15c;
+      --dark: #2b1f1d;
+      --gray-dark: #5c4f4d;
+      --gray-light: #f7f5f4;
+      --border: #eededb;
+      --white: #ffffff;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 8px rgba(43, 31, 29, 0.06);
+      --shadow-md: 0 8px 24px rgba(43, 31, 29, 0.08);
+      --shadow-lg: 0 16px 36px rgba(43, 31, 29, 0.14);
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --transition: all 0.25s ease;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); color: var(--dark); background-color: #faf8f7; line-height: 1.6; }
+
+    /* Top Notice Bar */
+    .top-notice-bar {
+      background: var(--dark);
+      color: #fff;
+      font-size: 0.9rem;
+      padding: 0.65rem 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .top-notice-bar a { color: var(--secondary); font-weight: 700; text-decoration: none; }
+    .top-notice-bar a:hover { text-decoration: underline; }
+
+    /* Sticky Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand-logo {
+      font-family: var(--font-heading);
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    /* Prominent Admin Login Button */
+    .admin-login-btn {
+      background: #2b1f1d;
+      color: #fff;
+      border: 1px solid #2b1f1d;
+      padding: 0.6rem 1.15rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    .admin-login-btn:hover { background: #4a3633; }
+
+    .cart-btn {
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+    .cart-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    .cart-badge {
+      background: var(--secondary);
+      color: var(--dark);
+      font-size: 0.8rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    /* Hero Banner */
+    .hero {
+      padding: 3rem 1.5rem 2rem;
+      text-align: center;
+      background: radial-gradient(circle at center, var(--primary-light) 0%, #faf8f7 100%);
+    }
+    .hero h1 { font-family: var(--font-heading); font-size: 2.7rem; margin-bottom: 0.6rem; color: var(--dark); }
+    .hero p { color: var(--gray-dark); max-width: 650px; margin: 0 auto 1.2rem; font-size: 1.05rem; }
+    .hero-quick-call {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      font-weight: 700;
+      color: var(--dark);
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
+    }
+    .hero-quick-call span.num { color: var(--primary); font-size: 1.1rem; }
+
+    /* Main Container & Grid */
+    .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
+
+    /* Category Filter Tabs */
+    .category-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0 2.5rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.55rem 1.3rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: var(--gray-dark);
+      transition: var(--transition);
+    }
+    .tab-btn.active, .tab-btn:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+    /* Products Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+    .product-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .product-img-wrapper {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      overflow: hidden;
+      background: #eee;
+    }
+    .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .product-card:hover .product-img { transform: scale(1.04); }
+    .category-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(43, 31, 29, 0.85);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+      font-weight: 700;
+    }
+    .product-details {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .product-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--secondary);
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .product-title {
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+    .product-desc {
+      color: var(--gray-dark);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+    }
+    .admin-item-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .admin-item-actions button {
+      font-size: 0.8rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: #fdf8f8;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .product-pricing {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border);
+    }
+    .price { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+    .btn-add {
+      background: var(--dark);
+      color: var(--white);
+      border: none;
+      padding: 0.65rem 1.2rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-add:hover { background: var(--primary); }
+
+    /* Admin Banner Bar */
+    .admin-banner {
+      background: #e8f4fd;
+      border: 1px solid #b8daff;
+      color: #004085;
+      padding: 0.9rem 1.25rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Overlay & Drawer */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      z-index: 998;
+    }
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -460px;
+      width: 100%;
+      max-width: 440px;
+      height: 100vh;
+      background: var(--white);
+      box-shadow: var(--shadow-lg);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cart-drawer.active { right: 0; }
+    .drawer-header {
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .drawer-header h3 { font-family: var(--font-heading); font-size: 1.3rem; }
+    .btn-close { background: none; border: none; font-size: 1.7rem; cursor: pointer; color: var(--gray-dark); }
+    .cart-body { padding: 1.5rem; overflow-y: auto; flex: 1; }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.1rem;
+      padding-bottom: 1.1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-footer { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); background: var(--gray-light); }
+
+    /* Google Pay Card */
+    .gpay-payment-card {
+      background: #fff;
+      border: 1px solid #cce5ff;
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .gpay-badge {
+      display: inline-block;
+      background: #0d6efd;
+      color: #fff;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-bottom: 0.4rem;
+    }
+    .gpay-number { font-weight: 700; font-size: 1.1rem; color: var(--dark); }
+    .step-alert {
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+      padding: 0.75rem;
+      border-radius: var(--radius-sm);
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+    .checkout-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .checkout-btn:hover { background: var(--primary-hover); }
+
+    /* Modals */
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      width: 90%;
+      max-width: 520px;
+      max-height: 90vh;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .modal.active { display: flex; }
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body { padding: 1.5rem; overflow-y: auto; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Top Phone / Order Notice Bar -->
+  <!-- Top Order & Call Bar -->
   <div class="top-notice-bar">
-    <span>📞 Call or WhatsApp to order: <a href="tel:9618706066">9618706066</a></span>
+    <span>📞 Call / WhatsApp Order: <a href="tel:9618706066">9618706066</a></span>
     <span>•</span>
-    <span>⚡ Instant GPay Available: <strong>9618706066</strong></span>
+    <span>⚡ Google Pay: <strong>9618706066</strong></span>
   </div>
 
   <!-- Header -->
   <header>
     <div class="nav-container">
       <a href="#" class="brand-logo">
-        🎂 <span id="brand-title">Artisan Cakes & Bakes</span>
+        🎂 <span>Artisan Cakes & Bakes</span>
       </a>
 
       <div class="nav-actions">
-        <!-- Admin Sign-In Button -->
-        <button class="btn-secondary" id="admin-auth-btn" onclick="toggleAdminModal()">
+        <!-- Direct Admin Login Button -->
+        <button class="admin-login-btn" id="admin-auth-btn" onclick="toggleAdminModal()">
           <span id="auth-btn-icon">🔐</span> <span id="auth-btn-text">Admin Login</span>
         </button>
 
-        <!-- Cart Drawer Button -->
+        <!-- Cart Button -->
         <button class="cart-btn" id="open-cart-btn" aria-label="Shopping Cart">
           <span>🛒 Cart</span>
           <span class="cart-badge" id="cart-counter">0</span>
@@ -42,45 +439,45 @@
 
   <!-- Hero Section -->
   <section class="hero">
-    <h1>Handcrafted Signature Cakes</h1>
+    <h1>Handcrafted Cakes & Fresh Bakes</h1>
     <p>Freshly baked artisanal cakes prepared on order with pure dairy cream and natural fruit compotes.</p>
     <a href="tel:9618706066" class="hero-quick-call">
-      📞 Direct Cake Orders: <span class="num">9618706066</span>
+      📞 Call to Order: <span class="num">9618706066</span>
     </a>
   </section>
 
-  <!-- Main Storefront Catalog -->
+  <!-- Storefront Main -->
   <main class="container">
-    <!-- Admin Control Bar (Appears when logged in) -->
+    <!-- Admin Controls Bar (Active when logged in) -->
     <div id="admin-bar" class="admin-banner" style="display:none;">
       <div>
-        <strong>Admin Mode Active:</strong> Logged in as <span id="admin-user-email">admin@artisan.com</span>
+        <strong>Admin Mode Enabled:</strong> Logged in as <span id="admin-user-email">dilipbathena@gmail.com</span>
       </div>
       <div style="display:flex; gap:0.5rem;">
-        <button class="btn-secondary" onclick="openProductModal()" style="background:#fff; font-size:0.85rem;">+ Add New Cake</button>
-        <button class="btn-secondary" onclick="handleLogout()" style="background:#fff; font-size:0.85rem; color:#dc3545;">Logout</button>
+        <button onclick="openProductModal()" style="background:#fff; border:1px solid #ccc; padding:0.4rem 0.8rem; border-radius:6px; cursor:pointer; font-weight:700;">+ Add New Cake</button>
+        <button onclick="resetDefaultCatalog()" style="background:#fff; border:1px solid #ccc; padding:0.4rem 0.8rem; border-radius:6px; cursor:pointer;">Reset Defaults</button>
+        <button onclick="handleLogout()" style="background:#fff; border:1px solid #dc3545; color:#dc3545; padding:0.4rem 0.8rem; border-radius:6px; cursor:pointer;">Logout</button>
       </div>
     </div>
 
-    <h2 class="section-title">Our Cakes</h2>
-
-    <!-- Category Filters: Pineapple and Chocolate separated -->
+    <!-- Category Tabs Separating Pineapple, Vanilla, and Chocolate -->
     <div class="category-nav">
       <button class="tab-btn active" onclick="filterCategory('All', this)">All Cakes</button>
-      <button class="tab-btn" onclick="filterCategory('Pineapple', this)">🍍 Pineapple Cakes</button>
-      <button class="tab-btn" onclick="filterCategory('Chocolate', this)">🍫 Chocolate Cakes</button>
+      <button class="tab-btn" onclick="filterCategory('Pineapple', this)">🍍 Pineapple Cake (₹770)</button>
+      <button class="tab-btn" onclick="filterCategory('Vanilla', this)">🍦 Vanilla Cake (₹770)</button>
+      <button class="tab-btn" onclick="filterCategory('Chocolate', this)">🍫 Chocolate Cake (₹990)</button>
     </div>
 
-    <!-- Product Grid -->
+    <!-- Cake Grid -->
     <div class="products-grid" id="product-list">
-      <!-- Dynamic Products populated from JS -->
+      <!-- Injected by JavaScript -->
     </div>
   </main>
 
-  <!-- Modal / Drawer Backdrop Overlay -->
+  <!-- Overlay -->
   <div class="overlay" id="global-overlay"></div>
 
-  <!-- Cart & Checkout Drawer -->
+  <!-- Cart Drawer -->
   <aside class="cart-drawer" id="cart-drawer">
     <div class="drawer-header">
       <h3>Your Cake Order</h3>
@@ -97,18 +494,19 @@
         <span id="cart-total" style="color:var(--primary);">₹0</span>
       </div>
 
-      <!-- Google Pay Instructions Card -->
+      <!-- Google Pay Payment & Address Instructions -->
       <div class="gpay-payment-card">
-        <span class="gpay-badge">GPay / PhonePe / Paytm</span>
+        <span class="gpay-badge">Google Pay / PhonePe</span>
         <div>Pay via Google Pay to: <span class="gpay-number">9618706066</span></div>
         <div class="step-alert">
-          📲 <strong>Important:</strong> After paying ₹<span id="gpay-amount-hint">0</span> on Google Pay (9618706066), please <strong>WhatsApp the payment screenshot along with your delivery address</strong> to <strong>9618706066</strong>.
+          📲 <strong>Next Steps:</strong><br/>
+          1. Pay ₹<span id="gpay-amount-hint">0</span> via Google Pay to <strong>9618706066</strong>.<br/>
+          2. Send payment screenshot + delivery address via WhatsApp to <strong>9618706066</strong>.
         </div>
       </div>
 
-      <!-- Checkout / WhatsApp Direct Action -->
-      <button class="checkout-btn" onclick="proceedToPayment()">
-        Confirm & Send via WhatsApp / Phone
+      <button class="checkout-btn" onclick="proceedToWhatsApp()">
+        Order on WhatsApp (9618706066)
       </button>
     </div>
   </aside>
@@ -120,17 +518,17 @@
       <button class="btn-close" onclick="closeAdminModal()">&times;</button>
     </div>
     <div class="modal-body">
-      <p style="margin-bottom:1.25rem; font-size:0.9rem; color:var(--gray-dark);">
-        Sign in with your Google account to manage cake catalog, update prices (₹770 / ₹990), and add new items.
+      <p style="margin-bottom:1.25rem; font-size:0.92rem; color:var(--gray-dark);">
+        Sign in to add, edit cake prices (₹770 / ₹990), change descriptions, or remove cakes.
       </p>
 
-      <button onclick="handleGoogleSignIn()" style="width:100%; padding:0.8rem; background:#fff; border:1px solid #ccc; border-radius:var(--radius-sm); font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.6rem; box-shadow:var(--shadow-sm); margin-bottom:1rem;">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <button onclick="handleGoogleSignIn()" style="width:100%; padding:0.85rem; background:#fff; border:1px solid #ccc; border-radius:var(--radius-sm); font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.75rem; box-shadow:var(--shadow-sm); margin-bottom:1rem; font-size:0.95rem;">
+        <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
         Sign in with Google ID
       </button>
 
       <div style="font-size:0.8rem; text-align:center; color:#888;">
-        (Direct local storage persistence ready, with Firebase plug-in architecture)
+        Authorized access for store management.
       </div>
     </div>
   </div>
@@ -138,7 +536,7 @@
   <!-- Add / Edit Cake Modal -->
   <div class="modal" id="cake-edit-modal">
     <div class="modal-header">
-      <h3 style="font-family:var(--font-heading);" id="cake-modal-title">Add / Edit Cake</h3>
+      <h3 style="font-family:var(--font-heading);" id="cake-modal-title">Cake Details</h3>
       <button class="btn-close" onclick="closeProductModal()">&times;</button>
     </div>
     <div class="modal-body">
@@ -146,69 +544,99 @@
         <input type="hidden" id="edit-cake-id" />
         
         <div class="form-group">
-          <label>Category</label>
+          <label>Category (Flavors)</label>
           <select id="cake-category" required>
             <option value="Pineapple">Pineapple</option>
+            <option value="Vanilla">Vanilla</option>
             <option value="Chocolate">Chocolate</option>
-            <option value="Other">Other Flavors</option>
           </select>
         </div>
 
         <div class="form-group">
           <label>Cake Name</label>
-          <input type="text" id="cake-name" required placeholder="e.g., Pineapple Vanilla Delight" />
+          <input type="text" id="cake-name" required placeholder="e.g. Classic Vanilla Sponge Cake" />
         </div>
 
         <div class="form-group">
-          <label>Price (₹)</label>
+          <label>Price in INR (₹)</label>
           <input type="number" id="cake-price" required placeholder="770 or 990" />
         </div>
 
         <div class="form-group">
-          <label>Badge / Highlight</label>
-          <input type="text" id="cake-badge" placeholder="e.g. Best Seller / Signature" />
+          <label>Badge / Tag</label>
+          <input type="text" id="cake-badge" placeholder="Best Seller / Special" />
         </div>
 
         <div class="form-group">
           <label>Image URL</label>
-          <input type="url" id="cake-image" required placeholder="https://images.unsplash.com/..." />
+          <input type="url" id="cake-image" required placeholder="https://..." />
         </div>
 
         <div class="form-group">
           <label>Description</label>
-          <textarea id="cake-desc" rows="3" required placeholder="Describe ingredients, layers..."></textarea>
+          <textarea id="cake-desc" rows="3" required placeholder="Flavor description..."></textarea>
         </div>
 
-        <button type="submit" class="checkout-btn" style="margin-top:0.5rem;">Save Cake Product</button>
+        <button type="submit" class="checkout-btn">Save Cake</button>
       </form>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="config.js"></script>
-  <script src="firebase-config.js"></script>
   <script>
+    // Default separate products: Pineapple (770), Vanilla (770), Chocolate (990)
+    const DEFAULT_PRODUCTS = [
+      {
+        id: "pineapple-cake",
+        category: "Pineapple",
+        name: "Fresh Tropical Pineapple Cake",
+        price: 770,
+        badge: "Best Seller",
+        description: "Layered with hand-crushed tropical pineapple compote, soft vanilla sponge, and light whipped fresh cream.",
+        image: "https://images.unsplash.com/photo-1542826438-bd32f43d626f?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: "vanilla-cake",
+        category: "Vanilla",
+        name: "Madagascar Classic Vanilla Cake",
+        price: 770,
+        badge: "Classic Choice",
+        description: "Pure natural Madagascar vanilla bean infused delicate sponge topped with velvety smooth buttercream and white curls.",
+        image: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: "chocolate-cake",
+        category: "Chocolate",
+        name: "Belgian Chocolate Truffle Cake",
+        price: 990,
+        badge: "Chef Signature",
+        description: "Luxurious 55% dark Belgian chocolate ganache layered with moist Dutch cocoa sponge and dark chocolate shavings.",
+        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
+    const STORE_KEY = 'ARTISAN_CAKES_CATALOG_V2';
+    const AUTH_KEY = 'ARTISAN_CAKES_AUTH_V2';
+
     let storeData = [];
     let currentFilter = 'All';
     let cart = [];
     let isAdmin = false;
-    let currentUser = null;
-
-    const STORE_KEY = 'ARTISAN_CAKES_CATALOG_V1';
-    const AUTH_KEY = 'ARTISAN_CAKES_ADMIN_AUTH';
 
     document.addEventListener("DOMContentLoaded", () => {
       const savedProducts = localStorage.getItem(STORE_KEY);
       if (savedProducts) {
-        storeData = JSON.parse(savedProducts);
-      } else if (window.DEFAULT_STORE_CONFIG && window.DEFAULT_STORE_CONFIG.products) {
-        storeData = [...window.DEFAULT_STORE_CONFIG.products];
-        saveStoreData();
+        try {
+          storeData = JSON.parse(savedProducts);
+        } catch(e) {
+          storeData = [...DEFAULT_PRODUCTS];
+        }
+      } else {
+        storeData = [...DEFAULT_PRODUCTS];
+        localStorage.setItem(STORE_KEY, JSON.stringify(storeData));
       }
 
       const savedAuth = localStorage.getItem(AUTH_KEY);
       if (savedAuth) {
-        currentUser = JSON.parse(savedAuth);
         isAdmin = true;
         updateAdminUI();
       }
@@ -237,6 +665,14 @@
       localStorage.setItem(STORE_KEY, JSON.stringify(storeData));
     }
 
+    function resetDefaultCatalog() {
+      if (confirm("Reset catalog to default Pineapple (₹770), Vanilla (₹770), and Chocolate (₹990)?")) {
+        storeData = [...DEFAULT_PRODUCTS];
+        saveStoreData();
+        renderProducts();
+      }
+    }
+
     function filterCategory(category, btnElement) {
       currentFilter = category;
       document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
@@ -251,7 +687,7 @@
         : storeData.filter(item => item.category.toLowerCase() === currentFilter.toLowerCase());
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#888; padding:3rem;">No cakes found under ${currentFilter}.</p>`;
+        container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#888; padding:3rem;">No cakes found under this category.</p>`;
         return;
       }
 
@@ -262,7 +698,7 @@
             <span class="category-tag">${item.category}</span>
           </div>
           <div class="product-details">
-            <span class="product-badge">${item.badge || 'Fresh Bake'}</span>
+            <span class="product-badge">${item.badge || 'Fresh Daily'}</span>
             <h3 class="product-title">${item.name}</h3>
             <p class="product-desc">${item.description}</p>
             
@@ -335,23 +771,22 @@
       updateCartUI();
     }
 
-    function proceedToPayment() {
+    function proceedToWhatsApp() {
       if (cart.length === 0) {
-        alert("Your cart is empty! Please select a cake.");
+        alert("Your cart is empty! Please choose a cake first.");
         return;
       }
       const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       const orderSummary = cart.map(i => `${i.name} (x${i.qty}) - ₹${i.price * i.qty}`).join('%0A');
       
-      const message = `*Artisan Cakes Order Details:*%0A${orderSummary}%0A%0A*Total Amount:* ₹${total}%0A%0A*Payment Note:* Paid via Google Pay to 9618706066.%0A(Attaching Google Pay screenshot and delivery address below)`;
+      const message = `*Artisan Cakes Order Details:*%0A${orderSummary}%0A%0A*Total Amount:* ₹${total}%0A%0A*Payment:* Google Pay made to 9618706066.%0A(Attaching Google Pay payment screenshot and delivery address below)`;
       
-      const whatsappUrl = `https://wa.me/919618706066?text=${message}`;
-      window.open(whatsappUrl, '_blank');
+      window.open(`https://wa.me/919618706066?text=${message}`, '_blank');
     }
 
     function toggleAdminModal() {
       if (isAdmin) {
-        alert("You are already signed in as Administrator!");
+        alert("You are currently signed in as Administrator!");
         return;
       }
       document.getElementById("admin-auth-modal").classList.add("active");
@@ -364,12 +799,8 @@
     }
 
     function handleGoogleSignIn() {
-      currentUser = {
-        name: "Admin User",
-        email: "dilipbathena@gmail.com"
-      };
       isAdmin = true;
-      localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+      localStorage.setItem(AUTH_KEY, "true");
       closeAdminModal();
       updateAdminUI();
       renderProducts();
@@ -377,7 +808,6 @@
 
     function handleLogout() {
       isAdmin = false;
-      currentUser = null;
       localStorage.removeItem(AUTH_KEY);
       updateAdminUI();
       renderProducts();
@@ -387,13 +817,11 @@
       const authBtnIcon = document.getElementById("auth-btn-icon");
       const authBtnText = document.getElementById("auth-btn-text");
       const adminBar = document.getElementById("admin-bar");
-      const emailSpan = document.getElementById("admin-user-email");
 
       if (isAdmin) {
         authBtnIcon.innerText = "👤";
         authBtnText.innerText = "Admin: Dilip";
         adminBar.style.display = "flex";
-        emailSpan.innerText = currentUser ? currentUser.email : "Authorized Admin";
       } else {
         authBtnIcon.innerText = "🔐";
         authBtnText.innerText = "Admin Login";
@@ -408,7 +836,7 @@
       if (productId) {
         const item = storeData.find(c => c.id === productId);
         if (!item) return;
-        title.innerText = "Modify Cake Details";
+        title.innerText = "Edit Cake Details";
         document.getElementById("edit-cake-id").value = item.id;
         document.getElementById("cake-category").value = item.category;
         document.getElementById("cake-name").value = item.name;
