@@ -125,4 +125,343 @@
       </p>
 
       <button onclick="handleGoogleSignIn()" style="width:100%; padding:0.8rem; background:#fff; border:1px solid #ccc; border-radius:var(--radius-sm); font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.6rem; box-shadow:var(--shadow-sm); margin-bottom:1rem;">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Sign in with Google ID
+      </button>
+
+      <div style="font-size:0.8rem; text-align:center; color:#888;">
+        (Direct local storage persistence ready, with Firebase plug-in architecture)
+      </div>
+    </div>
+  </div>
+
+  <!-- Add / Edit Cake Modal -->
+  <div class="modal" id="cake-edit-modal">
+    <div class="modal-header">
+      <h3 style="font-family:var(--font-heading);" id="cake-modal-title">Add / Edit Cake</h3>
+      <button class="btn-close" onclick="closeProductModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="cake-form" onsubmit="handleSaveCake(event)">
+        <input type="hidden" id="edit-cake-id" />
+        
+        <div class="form-group">
+          <label>Category</label>
+          <select id="cake-category" required>
+            <option value="Pineapple">Pineapple</option>
+            <option value="Chocolate">Chocolate</option>
+            <option value="Other">Other Flavors</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Cake Name</label>
+          <input type="text" id="cake-name" required placeholder="e.g., Pineapple Vanilla Delight" />
+        </div>
+
+        <div class="form-group">
+          <label>Price (₹)</label>
+          <input type="number" id="cake-price" required placeholder="770 or 990" />
+        </div>
+
+        <div class="form-group">
+          <label>Badge / Highlight</label>
+          <input type="text" id="cake-badge" placeholder="e.g. Best Seller / Signature" />
+        </div>
+
+        <div class="form-group">
+          <label>Image URL</label>
+          <input type="url" id="cake-image" required placeholder="https://images.unsplash.com/..." />
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="cake-desc" rows="3" required placeholder="Describe ingredients, layers..."></textarea>
+        </div>
+
+        <button type="submit" class="checkout-btn" style="margin-top:0.5rem;">Save Cake Product</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    let storeData = [];
+    let currentFilter = 'All';
+    let cart = [];
+    let isAdmin = false;
+    let currentUser = null;
+
+    const STORE_KEY = 'ARTISAN_CAKES_CATALOG_V1';
+    const AUTH_KEY = 'ARTISAN_CAKES_ADMIN_AUTH';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedProducts = localStorage.getItem(STORE_KEY);
+      if (savedProducts) {
+        storeData = JSON.parse(savedProducts);
+      } else if (window.DEFAULT_STORE_CONFIG && window.DEFAULT_STORE_CONFIG.products) {
+        storeData = [...window.DEFAULT_STORE_CONFIG.products];
+        saveStoreData();
+      }
+
+      const savedAuth = localStorage.getItem(AUTH_KEY);
+      if (savedAuth) {
+        currentUser = JSON.parse(savedAuth);
+        isAdmin = true;
+        updateAdminUI();
+      }
+
+      renderProducts();
+
+      const drawer = document.getElementById("cart-drawer");
+      const overlay = document.getElementById("global-overlay");
+      document.getElementById("open-cart-btn").addEventListener("click", () => {
+        drawer.classList.add("active");
+        overlay.style.display = "block";
+      });
+      const closeCart = () => {
+        drawer.classList.remove("active");
+        overlay.style.display = "none";
+      };
+      document.getElementById("close-cart-btn").addEventListener("click", closeCart);
+      overlay.addEventListener("click", () => {
+        closeCart();
+        closeAdminModal();
+        closeProductModal();
+      });
+    });
+
+    function saveStoreData() {
+      localStorage.setItem(STORE_KEY, JSON.stringify(storeData));
+    }
+
+    function filterCategory(category, btnElement) {
+      currentFilter = category;
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      if (btnElement) btnElement.classList.add("active");
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const container = document.getElementById("product-list");
+      const filtered = (currentFilter === 'All') 
+        ? storeData 
+        : storeData.filter(item => item.category.toLowerCase() === currentFilter.toLowerCase());
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:#888; padding:3rem;">No cakes found under ${currentFilter}.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <article class="product-card">
+          <div class="product-img-wrapper">
+            <img class="product-img" src="${item.image}" alt="${item.name}" loading="lazy" />
+            <span class="category-tag">${item.category}</span>
+          </div>
+          <div class="product-details">
+            <span class="product-badge">${item.badge || 'Fresh Bake'}</span>
+            <h3 class="product-title">${item.name}</h3>
+            <p class="product-desc">${item.description}</p>
+            
+            ${isAdmin ? `
+              <div class="admin-item-actions">
+                <button onclick="openProductModal('${item.id}')">✏️ Edit Cake</button>
+                <button onclick="deleteProduct('${item.id}')" style="color:#c25975;">🗑️ Delete</button>
+              </div>
+            ` : ''}
+
+            <div class="product-pricing">
+              <span class="price">₹${item.price}</span>
+              <button class="btn-add" onclick="addToCart('${item.id}')">+ Add to Bag</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function addToCart(productId) {
+      const cake = storeData.find(c => c.id === productId);
+      if (!cake) return;
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ ...cake, qty: 1 });
+      }
+      updateCartUI();
+      document.getElementById("cart-drawer").classList.add("active");
+      document.getElementById("global-overlay").style.display = "block";
+    }
+
+    function updateCartUI() {
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      
+      document.getElementById("cart-counter").innerText = count;
+      document.getElementById("cart-total").innerText = "₹" + total;
+      document.getElementById("gpay-amount-hint").innerText = total;
+
+      const itemsContainer = document.getElementById("cart-items");
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = '<p style="text-align:center; color:#888; margin-top:3rem;">Your cart is currently empty.</p>';
+        return;
+      }
+
+      itemsContainer.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div>
+            <h4 style="font-size:1rem; margin-bottom:0.25rem;">${item.name}</h4>
+            <div style="font-size:0.85rem; color:var(--gray-dark);">₹${item.price} &times; ${item.qty} = <strong>₹${item.price * item.qty}</strong></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            <button onclick="changeQty('${item.id}', -1)" style="padding:3px 9px; cursor:pointer; border-radius:4px; border:1px solid #ccc; background:#fff;">-</button>
+            <span style="font-weight:700; min-width:20px; text-align:center;">${item.qty}</span>
+            <button onclick="changeQty('${item.id}', 1)" style="padding:3px 9px; cursor:pointer; border-radius:4px; border:1px solid #ccc; background:#fff;">+</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function changeQty(productId, delta) {
+      const item = cart.find(i => i.id === productId);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== productId);
+      }
+      updateCartUI();
+    }
+
+    function proceedToPayment() {
+      if (cart.length === 0) {
+        alert("Your cart is empty! Please select a cake.");
+        return;
+      }
+      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const orderSummary = cart.map(i => `${i.name} (x${i.qty}) - ₹${i.price * i.qty}`).join('%0A');
+      
+      const message = `*Artisan Cakes Order Details:*%0A${orderSummary}%0A%0A*Total Amount:* ₹${total}%0A%0A*Payment Note:* Paid via Google Pay to 9618706066.%0A(Attaching Google Pay screenshot and delivery address below)`;
+      
+      const whatsappUrl = `https://wa.me/919618706066?text=${message}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    function toggleAdminModal() {
+      if (isAdmin) {
+        alert("You are already signed in as Administrator!");
+        return;
+      }
+      document.getElementById("admin-auth-modal").classList.add("active");
+      document.getElementById("global-overlay").style.display = "block";
+    }
+
+    function closeAdminModal() {
+      document.getElementById("admin-auth-modal").classList.remove("active");
+      document.getElementById("global-overlay").style.display = "none";
+    }
+
+    function handleGoogleSignIn() {
+      currentUser = {
+        name: "Admin User",
+        email: "dilipbathena@gmail.com"
+      };
+      isAdmin = true;
+      localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+      closeAdminModal();
+      updateAdminUI();
+      renderProducts();
+    }
+
+    function handleLogout() {
+      isAdmin = false;
+      currentUser = null;
+      localStorage.removeItem(AUTH_KEY);
+      updateAdminUI();
+      renderProducts();
+    }
+
+    function updateAdminUI() {
+      const authBtnIcon = document.getElementById("auth-btn-icon");
+      const authBtnText = document.getElementById("auth-btn-text");
+      const adminBar = document.getElementById("admin-bar");
+      const emailSpan = document.getElementById("admin-user-email");
+
+      if (isAdmin) {
+        authBtnIcon.innerText = "👤";
+        authBtnText.innerText = "Admin: Dilip";
+        adminBar.style.display = "flex";
+        emailSpan.innerText = currentUser ? currentUser.email : "Authorized Admin";
+      } else {
+        authBtnIcon.innerText = "🔐";
+        authBtnText.innerText = "Admin Login";
+        adminBar.style.display = "none";
+      }
+    }
+
+    function openProductModal(productId = null) {
+      const modal = document.getElementById("cake-edit-modal");
+      const title = document.getElementById("cake-modal-title");
+      
+      if (productId) {
+        const item = storeData.find(c => c.id === productId);
+        if (!item) return;
+        title.innerText = "Modify Cake Details";
+        document.getElementById("edit-cake-id").value = item.id;
+        document.getElementById("cake-category").value = item.category;
+        document.getElementById("cake-name").value = item.name;
+        document.getElementById("cake-price").value = item.price;
+        document.getElementById("cake-badge").value = item.badge || '';
+        document.getElementById("cake-image").value = item.image;
+        document.getElementById("cake-desc").value = item.description;
+      } else {
+        title.innerText = "Add New Cake";
+        document.getElementById("cake-form").reset();
+        document.getElementById("edit-cake-id").value = "";
+      }
+
+      modal.classList.add("active");
+      document.getElementById("global-overlay").style.display = "block";
+    }
+
+    function closeProductModal() {
+      document.getElementById("cake-edit-modal").classList.remove("active");
+      document.getElementById("global-overlay").style.display = "none";
+    }
+
+    function handleSaveCake(e) {
+      e.preventDefault();
+      const id = document.getElementById("edit-cake-id").value;
+      const category = document.getElementById("cake-category").value;
+      const name = document.getElementById("cake-name").value;
+      const price = parseFloat(document.getElementById("cake-price").value);
+      const badge = document.getElementById("cake-badge").value;
+      const image = document.getElementById("cake-image").value;
+      const description = document.getElementById("cake-desc").value;
+
+      if (id) {
+        const index = storeData.findIndex(c => c.id === id);
+        if (index !== -1) {
+          storeData[index] = { id, category, name, price, badge, image, description };
+        }
+      } else {
+        const newId = 'cake-' + Date.now();
+        storeData.unshift({ id: newId, category, name, price, badge, image, description });
+      }
+
+      saveStoreData();
+      closeProductModal();
+      renderProducts();
+    }
+
+    function deleteProduct(productId) {
+      if (!confirm("Are you sure you want to delete this cake?")) return;
+      storeData = storeData.filter(c => c.id !== productId);
+      saveStoreData();
+      renderProducts();
+    }
+  </script>
+</body>
+</html>
