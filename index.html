@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Artisan Cakes & Bakes | Pineapple, Vanilla & Chocolate</title>
+  <title>Artisan Cakes & Bakes | Handcrafted Celebrations</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: var(--font-body); color: var(--dark); background-color: #faf8f7; line-height: 1.6; }
 
-    /* Top Announcement Bar */
+    /* Top Notice Bar */
     .top-notice-bar {
       background: var(--dark);
       color: #fff;
@@ -48,7 +48,7 @@
     .top-notice-bar a { color: var(--secondary); font-weight: 700; text-decoration: none; }
     .top-notice-bar a:hover { text-decoration: underline; }
 
-    /* Sticky Navigation */
+    /* Header & Navigation */
     header {
       position: sticky;
       top: 0;
@@ -80,17 +80,16 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.75rem;
       flex-wrap: wrap;
     }
 
-    /* Action Buttons */
     .btn-nav {
-      padding: 0.55rem 1rem;
+      padding: 0.55rem 1.1rem;
       border-radius: var(--radius-md);
       cursor: pointer;
       font-weight: 700;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
@@ -98,33 +97,18 @@
       transition: var(--transition);
       border: 1px solid transparent;
     }
-
     .member-btn {
       background: #fdf2f4;
       color: var(--primary);
       border-color: #eededb;
     }
-    .member-btn:hover {
-      background: #fae2e7;
-    }
-
-    .admin-link-btn {
-      background: #2b1f1d;
-      color: #fff;
-    }
-    .admin-link-btn:hover {
-      background: #4a3633;
-    }
-
+    .member-btn:hover { background: #fae2e7; }
     .cart-btn {
       background: var(--primary);
       color: var(--white);
       border: none;
     }
-    .cart-btn:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
+    .cart-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
     .cart-badge {
       background: var(--secondary);
       color: var(--dark);
@@ -157,7 +141,7 @@
     }
     .hero-quick-call span.num { color: var(--primary); font-size: 1.1rem; }
 
-    /* Membership Banner (for signed-in users) */
+    /* Member Banner */
     .member-status-bar {
       background: linear-gradient(90deg, #fff2e6 0%, #ffe8ed 100%);
       border: 1px solid #ffd4dc;
@@ -173,22 +157,7 @@
       font-size: 0.92rem;
     }
 
-    /* Admin Bar (when admin logged in) */
-    .admin-banner {
-      background: #e8f4fd;
-      border: 1px solid #b8daff;
-      color: #004085;
-      padding: 0.85rem 1.25rem;
-      border-radius: var(--radius-md);
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    /* Container & Categories */
+    /* Container & Category Filters */
     .container { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem 5rem; }
     .section-title { font-family: var(--font-heading); font-size: 2.1rem; margin-bottom: 0.5rem; text-align: center; }
 
@@ -280,20 +249,6 @@
       font-size: 0.95rem;
       margin-bottom: 1.25rem;
       flex-grow: 1;
-    }
-    .admin-item-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .admin-item-actions button {
-      font-size: 0.8rem;
-      padding: 0.35rem 0.7rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: #fdf8f8;
-      cursor: pointer;
-      font-weight: 600;
     }
     .product-pricing {
       display: flex;
@@ -430,7 +385,7 @@
     .modal-body { padding: 1.5rem; overflow-y: auto; }
     .form-group { margin-bottom: 1rem; }
     .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; }
-    .form-group input, .form-group textarea, .form-group select {
+    .form-group input {
       width: 100%;
       padding: 0.65rem 0.85rem;
       border: 1px solid var(--border);
@@ -442,34 +397,29 @@
 </head>
 <body>
 
-  <!-- Top Order & Call Bar -->
+  <!-- Top Announcement Bar -->
   <div class="top-notice-bar">
     <span>📞 Call / WhatsApp Order: <a href="tel:9618706066">9618706066</a></span>
     <span>•</span>
     <span>⚡ Instant Google Pay: <strong>9618706066</strong></span>
     <span>•</span>
-    <span>🎂 Special Cake Club Discounts for Members!</span>
+    <span>🎂 Sign in to enjoy Cake Club Discounts!</span>
   </div>
 
   <!-- Header -->
   <header>
     <div class="nav-container">
-      <a href="#" class="brand-logo">
+      <a href="index.html" class="brand-logo">
         🎂 <span>Artisan Cakes & Bakes</span>
       </a>
 
       <div class="nav-actions">
-        <!-- 1. Normal User Sign In / Membership Link -->
+        <!-- Normal User Sign In Link -->
         <button class="btn-nav member-btn" id="user-auth-btn" onclick="openUserModal()">
           <span id="user-btn-icon">🎁</span> <span id="user-btn-text">Member Login</span>
         </button>
 
-        <!-- 2. Separate Dedicated Admin Portal Link -->
-        <button class="btn-nav admin-link-btn" id="admin-auth-btn" onclick="openAdminModal()">
-          <span id="admin-btn-icon">🔐</span> <span id="admin-btn-text">Admin Panel</span>
-        </button>
-
-        <!-- 3. Cart Button -->
+        <!-- Cart Button -->
         <button class="btn-nav cart-btn" id="open-cart-btn" aria-label="Shopping Cart">
           <span>🛒 Cart</span>
           <span class="cart-badge" id="cart-counter">0</span>
@@ -481,7 +431,7 @@
   <!-- Hero Section -->
   <section class="hero">
     <h1>Handcrafted Cakes & Fresh Bakes</h1>
-    <p>Freshly baked on order using Madagascar vanilla beans, fresh fruit compotes, and Belgian dark chocolate.</p>
+    <p>Freshly baked on order using Madagascar vanilla beans, tropical pineapples, and Belgian dark chocolate.</p>
     <a href="tel:9618706066" class="hero-quick-call">
       📞 Call to Order: <span class="num">9618706066</span>
     </a>
@@ -490,24 +440,12 @@
   <!-- Storefront Main -->
   <main class="container">
 
-    <!-- Member Welcome Banner (Visible when user logged in) -->
+    <!-- Member Welcome Banner -->
     <div id="member-banner" class="member-status-bar" style="display:none;">
       <div>
-        🎉 <strong>Cake Club Member:</strong> Welcome back, <span id="member-name">Cake Lover</span>! Enjoy <strong>Free Delivery & 50 Reward Points</strong>.
+        🎉 <strong>Cake Club Member:</strong> Welcome, <span id="member-name">Valued Customer</span>! Enjoy <strong>Free Delivery & Special Perks</strong>.
       </div>
       <button onclick="handleUserLogout()" style="background:#fff; border:1px solid #ffd4dc; padding:0.35rem 0.8rem; border-radius:6px; cursor:pointer; color:#c25975; font-weight:700;">Sign Out</button>
-    </div>
-
-    <!-- Admin Controls Bar (Visible when admin logged in) -->
-    <div id="admin-bar" class="admin-banner" style="display:none;">
-      <div>
-        <strong>👑 Admin Control Active:</strong> Logged in as <span id="admin-user-email">dilipbathena@gmail.com</span>
-      </div>
-      <div style="display:flex; gap:0.5rem;">
-        <button onclick="openProductModal()" style="background:#fff; border:1px solid #ccc; padding:0.4rem 0.85rem; border-radius:6px; cursor:pointer; font-weight:700;">+ Add New Cake</button>
-        <button onclick="resetDefaultCatalog()" style="background:#fff; border:1px solid #ccc; padding:0.4rem 0.85rem; border-radius:6px; cursor:pointer;">Reset Default Cakes</button>
-        <button onclick="handleAdminLogout()" style="background:#fff; border:1px solid #dc3545; color:#dc3545; padding:0.4rem 0.85rem; border-radius:6px; cursor:pointer;">Exit Admin</button>
-      </div>
     </div>
 
     <!-- Category Tabs Separating Pineapple, Vanilla, and Chocolate -->
@@ -518,9 +456,9 @@
       <button class="tab-btn" onclick="filterCategory('Chocolate', this)">🍫 Chocolate Cake (₹990)</button>
     </div>
 
-    <!-- Cake Grid -->
+    <!-- Product Grid -->
     <div class="products-grid" id="product-list">
-      <!-- Injected by JavaScript -->
+      <!-- Dynamically rendered -->
     </div>
   </main>
 
@@ -561,15 +499,15 @@
     </div>
   </aside>
 
-  <!-- Normal User / Member Sign In Modal -->
+  <!-- Normal Customer Sign In Modal -->
   <div class="modal" id="user-auth-modal">
     <div class="modal-header">
-      <h3 style="font-family:var(--font-heading);">Cake Club Membership</h3>
+      <h3 style="font-family:var(--font-heading);">Member Sign In</h3>
       <button class="btn-close" onclick="closeUserModal()">&times;</button>
     </div>
     <div class="modal-body">
       <p style="margin-bottom:1.1rem; font-size:0.92rem; color:var(--gray-dark);">
-        Sign in to unlock exclusive cake perks, track your previous orders, and enjoy 50 loyalty points on your next birthday order!
+        Sign in with your mobile number or Google account to place cake orders, track status, and get reward perks!
       </p>
 
       <form onsubmit="handleUserSignIn(event)">
@@ -582,7 +520,7 @@
           <input type="text" id="member-input-contact" required placeholder="e.g. 9618706066 or user@gmail.com" />
         </div>
         <button type="submit" class="checkout-btn" style="background:var(--primary); margin-bottom:0.85rem;">
-          Sign In as Member
+          Continue as Member
         </button>
       </form>
 
@@ -595,79 +533,7 @@
     </div>
   </div>
 
-  <!-- Admin Portal Modal (Dedicated route) -->
-  <div class="modal" id="admin-auth-modal">
-    <div class="modal-header">
-      <h3 style="font-family:var(--font-heading);">Admin Portal</h3>
-      <button class="btn-close" onclick="closeAdminModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <p style="margin-bottom:1.25rem; font-size:0.92rem; color:var(--gray-dark);">
-        Administrative access to manage cakes, modify prices (₹770 / ₹990), or add new flavors.
-      </p>
-
-      <button onclick="handleAdminGoogleSignIn()" style="width:100%; padding:0.85rem; background:#fff; border:1px solid #ccc; border-radius:var(--radius-sm); font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.75rem; box-shadow:var(--shadow-sm); margin-bottom:1rem; font-size:0.95rem;">
-        <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Sign in with Admin Google ID
-      </button>
-
-      <div style="font-size:0.8rem; text-align:center; color:#888;">
-        Authorized access: <a href="#admin" style="color:var(--primary); font-weight:700;">Direct Link (#admin)</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add / Edit Cake Modal -->
-  <div class="modal" id="cake-edit-modal">
-    <div class="modal-header">
-      <h3 style="font-family:var(--font-heading);" id="cake-modal-title">Cake Details</h3>
-      <button class="btn-close" onclick="closeProductModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <form id="cake-form" onsubmit="handleSaveCake(event)">
-        <input type="hidden" id="edit-cake-id" />
-        
-        <div class="form-group">
-          <label>Category (Flavors)</label>
-          <select id="cake-category" required>
-            <option value="Pineapple">Pineapple</option>
-            <option value="Vanilla">Vanilla</option>
-            <option value="Chocolate">Chocolate</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Cake Name</label>
-          <input type="text" id="cake-name" required placeholder="e.g. Classic Vanilla Sponge Cake" />
-        </div>
-
-        <div class="form-group">
-          <label>Price in INR (₹)</label>
-          <input type="number" id="cake-price" required placeholder="770 or 990" />
-        </div>
-
-        <div class="form-group">
-          <label>Badge / Tag</label>
-          <input type="text" id="cake-badge" placeholder="Best Seller / Special" />
-        </div>
-
-        <div class="form-group">
-          <label>Image URL</label>
-          <input type="url" id="cake-image" required placeholder="https://..." />
-        </div>
-
-        <div class="form-group">
-          <label>Description</label>
-          <textarea id="cake-desc" rows="3" required placeholder="Flavor description..."></textarea>
-        </div>
-
-        <button type="submit" class="checkout-btn">Save Cake</button>
-      </form>
-    </div>
-  </div>
-
   <script>
-    // Robust, highly reliable images (with direct fallback on error)
     const DEFAULT_PRODUCTS = [
       {
         id: "pineapple-cake",
@@ -685,7 +551,6 @@
         price: 770,
         badge: "Classic Choice",
         description: "Pure natural Madagascar vanilla bean infused delicate sponge topped with velvety smooth buttercream and white curls.",
-        // Bulletproof Vanilla Cake image from Unsplash
         image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=800&q=80"
       },
       {
@@ -699,24 +564,15 @@
       }
     ];
 
-    // Using V4 keys to completely bypass old browser cached localStorage
-    const STORE_KEY = 'ARTISAN_CAKES_CATALOG_V4';
-    const ADMIN_AUTH_KEY = 'ARTISAN_CAKES_ADMIN_AUTH_V4';
-    const USER_AUTH_KEY = 'ARTISAN_CAKES_USER_AUTH_V4';
+    const STORE_KEY = 'ARTISAN_CAKES_CATALOG_SHARED_V5';
+    const USER_AUTH_KEY = 'ARTISAN_CAKES_USER_V5';
 
     let storeData = [];
     let currentFilter = 'All';
     let cart = [];
-    let isAdmin = false;
     let currentUser = null;
 
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Check if user is navigating directly to #admin via URL
-      if (window.location.hash === '#admin') {
-        openAdminModal();
-      }
-
-      // 2. Load products or set defaults
       const savedProducts = localStorage.getItem(STORE_KEY);
       if (savedProducts) {
         try {
@@ -729,13 +585,6 @@
         localStorage.setItem(STORE_KEY, JSON.stringify(storeData));
       }
 
-      // 3. Check Admin session
-      if (localStorage.getItem(ADMIN_AUTH_KEY) === 'true') {
-        isAdmin = true;
-        updateAdminUI();
-      }
-
-      // 4. Check Member session
       const savedUser = localStorage.getItem(USER_AUTH_KEY);
       if (savedUser) {
         currentUser = JSON.parse(savedUser);
@@ -744,7 +593,6 @@
 
       renderProducts();
 
-      // Drawer and modal overlays
       const drawer = document.getElementById("cart-drawer");
       const overlay = document.getElementById("global-overlay");
       document.getElementById("open-cart-btn").addEventListener("click", () => {
@@ -758,23 +606,9 @@
       document.getElementById("close-cart-btn").addEventListener("click", closeCart);
       overlay.addEventListener("click", () => {
         closeCart();
-        closeAdminModal();
         closeUserModal();
-        closeProductModal();
       });
     });
-
-    function saveStoreData() {
-      localStorage.setItem(STORE_KEY, JSON.stringify(storeData));
-    }
-
-    function resetDefaultCatalog() {
-      if (confirm("Reset catalog to default Pineapple (₹770), Vanilla (₹770), and Chocolate (₹990)?")) {
-        storeData = [...DEFAULT_PRODUCTS];
-        saveStoreData();
-        renderProducts();
-      }
-    }
 
     function filterCategory(category, btnElement) {
       currentFilter = category;
@@ -783,7 +617,6 @@
       renderProducts();
     }
 
-    // Render Product Cards with image fallback handler
     function renderProducts() {
       const container = document.getElementById("product-list");
       const filtered = (currentFilter === 'All') 
@@ -809,14 +642,6 @@
             <span class="product-badge">${item.badge || 'Fresh Daily'}</span>
             <h3 class="product-title">${item.name}</h3>
             <p class="product-desc">${item.description}</p>
-            
-            ${isAdmin ? `
-              <div class="admin-item-actions">
-                <button onclick="openProductModal('${item.id}')">✏️ Edit Cake</button>
-                <button onclick="deleteProduct('${item.id}')" style="color:#c25975;">🗑️ Delete</button>
-              </div>
-            ` : ''}
-
             <div class="product-pricing">
               <span class="price">₹${item.price}</span>
               <button class="btn-add" onclick="addToCart('${item.id}')">+ Add to Bag</button>
@@ -885,7 +710,7 @@
         return;
       }
       const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      const memberNote = currentUser ? `*Customer Name:* ${currentUser.name}%0A*Member Status:* Cake Club Member%0A` : '';
+      const memberNote = currentUser ? `*Customer Name:* ${currentUser.name}%0A*Member Status:* Registered Member%0A` : '';
       const orderSummary = cart.map(i => `${i.name} (x${i.qty}) - ₹${i.price * i.qty}`).join('%0A');
       
       const message = `*Artisan Cakes Order Details:*%0A${memberNote}${orderSummary}%0A%0A*Total Amount:* ₹${total}%0A%0A*Payment:* Google Pay made to 9618706066.%0A(Attaching Google Pay payment screenshot and delivery address below)`;
@@ -893,9 +718,6 @@
       window.open(`https://wa.me/919618706066?text=${message}`, '_blank');
     }
 
-    /* ========================================================
-       User / Member Modal & Auth Controls
-       ======================================================== */
     function openUserModal() {
       document.getElementById("user-auth-modal").classList.add("active");
       document.getElementById("global-overlay").style.display = "block";
@@ -917,7 +739,7 @@
     }
 
     function handleUserGoogleSignIn() {
-      currentUser = { name: "Google Member", contact: "user@gmail.com" };
+      currentUser = { name: "Google Customer", contact: "customer@gmail.com" };
       localStorage.setItem(USER_AUTH_KEY, JSON.stringify(currentUser));
       closeUserModal();
       updateUserUI();
@@ -945,115 +767,6 @@
         btnText.innerText = "Member Login";
         btnIcon.innerText = "🎁";
       }
-    }
-
-    /* ========================================================
-       Admin Portal Modal & Controls
-       ======================================================== */
-    function openAdminModal() {
-      document.getElementById("admin-auth-modal").classList.add("active");
-      document.getElementById("global-overlay").style.display = "block";
-    }
-
-    function closeAdminModal() {
-      document.getElementById("admin-auth-modal").classList.remove("active");
-      document.getElementById("global-overlay").style.display = "none";
-    }
-
-    function handleAdminGoogleSignIn() {
-      isAdmin = true;
-      localStorage.setItem(ADMIN_AUTH_KEY, "true");
-      closeAdminModal();
-      updateAdminUI();
-      renderProducts();
-    }
-
-    function handleAdminLogout() {
-      isAdmin = false;
-      localStorage.removeItem(ADMIN_AUTH_KEY);
-      updateAdminUI();
-      renderProducts();
-    }
-
-    function updateAdminUI() {
-      const adminBar = document.getElementById("admin-bar");
-      const adminBtnText = document.getElementById("admin-btn-text");
-      const adminBtnIcon = document.getElementById("admin-btn-icon");
-
-      if (isAdmin) {
-        adminBar.style.display = "flex";
-        adminBtnText.innerText = "Admin: Active";
-        adminBtnIcon.innerText = "👑";
-      } else {
-        adminBar.style.display = "none";
-        adminBtnText.innerText = "Admin Panel";
-        adminBtnIcon.innerText = "🔐";
-      }
-    }
-
-    /* ========================================================
-       Cake Add / Edit Modal Controls
-       ======================================================== */
-    function openProductModal(productId = null) {
-      const modal = document.getElementById("cake-edit-modal");
-      const title = document.getElementById("cake-modal-title");
-      
-      if (productId) {
-        const item = storeData.find(c => c.id === productId);
-        if (!item) return;
-        title.innerText = "Edit Cake Details";
-        document.getElementById("edit-cake-id").value = item.id;
-        document.getElementById("cake-category").value = item.category;
-        document.getElementById("cake-name").value = item.name;
-        document.getElementById("cake-price").value = item.price;
-        document.getElementById("cake-badge").value = item.badge || '';
-        document.getElementById("cake-image").value = item.image;
-        document.getElementById("cake-desc").value = item.description;
-      } else {
-        title.innerText = "Add New Cake";
-        document.getElementById("cake-form").reset();
-        document.getElementById("edit-cake-id").value = "";
-      }
-
-      modal.classList.add("active");
-      document.getElementById("global-overlay").style.display = "block";
-    }
-
-    function closeProductModal() {
-      document.getElementById("cake-edit-modal").classList.remove("active");
-      document.getElementById("global-overlay").style.display = "none";
-    }
-
-    function handleSaveCake(e) {
-      e.preventDefault();
-      const id = document.getElementById("edit-cake-id").value;
-      const category = document.getElementById("cake-category").value;
-      const name = document.getElementById("cake-name").value;
-      const price = parseFloat(document.getElementById("cake-price").value);
-      const badge = document.getElementById("cake-badge").value;
-      const image = document.getElementById("cake-image").value;
-      const description = document.getElementById("cake-desc").value;
-
-      if (id) {
-        const index = storeData.findIndex(c => c.id === id);
-        if (index !== -1) {
-          storeData[index] = { id, category, name, price, badge, image, description };
-        }
-      } else {
-        const newId = 'cake-' + Date.now();
-        storeData.unshift({ id: newId, category, name, price, badge, image, description });
-      }
-
-      saveStoreData();
-      closeProductModal();
-      renderProducts();
-    }
-
-    function deleteProduct(productId) {
-      if (!confirm("Are you sure you want to delete this cake?")) return;
-      storeData = storeData.filter(c => c.id !== productId);
-      saveStoreData();
-      renderProducts();
     }
   </script>
 </body>
